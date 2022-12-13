@@ -10,7 +10,7 @@ Update : X
 
 Delete : O
 
-![GIF](https://user-images.githubusercontent.com/83052628/207265179-0c182c94-44ae-40ab-b503-73e085ea2dae.gif)
+![GIF](https://user-images.githubusercontent.com/83052628/207266980-41226b42-c83d-4ae1-ac93-683f2e7af1de.gif)
 
 # 사용법
 
