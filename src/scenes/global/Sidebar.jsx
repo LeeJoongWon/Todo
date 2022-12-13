@@ -10,7 +10,6 @@ import PostAddIcon from '@mui/icons-material/PostAdd';
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {

@@ -5,16 +5,32 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Header from '../../components/Header';
 import axios from 'axios';
 
-const Form = () => {
+const Form = ({ close, data, update, str }) => {
     const isNonMobile = useMediaQuery('(min-width:600px)'); // 최소 너비 설정
     const handleFormSubmit = (values) => {
-        values.success = '진행중';
-        axios.post('http://localhost:3001/todo', values);
+        if (update) {
+            close(false);
+            update(values);
+        } else {
+            values.success = '진행중';
+            axios.post('http://localhost:3001/todo', values);
+        }
     };
+
+    const initialValues = data
+        ? data
+        : {
+              title: '',
+              content: '',
+              reward: '',
+              start: '',
+              end: '',
+              success: '',
+          };
 
     return (
         <Box m="20px">
-            <Header title="CREATE ToDo" subtitle="ToDo 생성하기" />
+            <Header title={str ? str : 'CREATE ToDo'} subtitle={str ? null : 'ToDo 생성하기'} />
 
             <Formik onSubmit={handleFormSubmit} initialValues={initialValues} validationSchema={checkoutSchema}>
                 {({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => (
@@ -92,10 +108,23 @@ const Form = () => {
                                 helperText={touched.end && errors.end}
                                 sx={{ gridColumn: 'span 1' }}
                             />
+                            {data ? (
+                                <TextField
+                                    fullWidth
+                                    variant="filled"
+                                    type="text"
+                                    label="성공여부"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    value={values.success}
+                                    name="success"
+                                    sx={{ gridColumn: 'span 1' }}
+                                />
+                            ) : null}
                         </Box>
                         <Box display="flex" justifyContent="end" mt="20px">
                             <Button type="submit" color="secondary" variant="contained">
-                                ToDo 생성하기
+                                {str ? str : '생성하기'}
                             </Button>
                         </Box>
                     </form>
@@ -112,12 +141,5 @@ const checkoutSchema = yup.object().shape({
     start: yup.string().required('입력해주세요'),
     end: yup.string().required('입력해주세요'),
 });
-const initialValues = {
-    title: '',
-    content: '',
-    reward: '',
-    start: '',
-    end: '',
-};
 
 export default Form;

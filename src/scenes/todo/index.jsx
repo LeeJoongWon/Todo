@@ -4,24 +4,33 @@ import { tokens } from '../../theme';
 import Header from '../../components/Header';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Modal from '../../components/Modal';
 
 const ToDo = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [todoList, setTodoList] = useState([]);
+    const [modal, setModal] = useState(false);
+    const [modifyData, setModify] = useState();
     const readList = () => {
-        axios.get('http://localhost:3001/todo').then((res) => setTodoList(res.data));
-        console.log(todoList, 'data');
+        axios.get('http://localhost:3001/todo').then((res) => setTodoList([...res.data]));
     };
 
     useEffect(() => {
         readList();
     }, []);
 
-    const onButtonClick = (e, data) => {
-        console.log(data);
+    const _delete = (e, data) => {
         axios.delete(`http://localhost:3001/todo/${data.id}`);
         readList();
+    };
+    const _update = (data) => {
+        axios.put(`http://localhost:3001/todo/${data.id}`, data);
+        readList();
+    };
+    const modalController = (e, data) => {
+        setModify(data);
+        setModal(true);
     };
 
     const columns = [
@@ -61,12 +70,24 @@ const ToDo = () => {
             renderCell: (params) => <Typography color={colors.greenAccent[400]}>{params.row.success}</Typography>,
         },
         {
+            field: 'update',
+            headerName: '수정',
+            flex: 1,
+            renderCell: (params) => {
+                return (
+                    <Button onClick={(e) => modalController(e, params.row)} variant="contained">
+                        수정
+                    </Button>
+                );
+            },
+        },
+        {
             field: 'delete',
             headerName: '삭제',
             flex: 1,
             renderCell: (params) => {
                 return (
-                    <Button onClick={(e) => onButtonClick(e, params.row)} variant="contained">
+                    <Button onClick={(e) => _delete(e, params.row)} variant="contained">
                         Delete
                     </Button>
                 );
@@ -106,6 +127,7 @@ const ToDo = () => {
                     },
                 }}
             >
+                {modal ? <Modal close={setModal} data={modifyData} update={_update} /> : null}
                 <DataGrid checkboxSelection rows={todoList} columns={columns} />
             </Box>
         </Box>
