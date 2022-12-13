@@ -35,7 +35,7 @@ const Sidebar = () => {
     const colors = tokens(theme.palette.mode);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [selected, setSelected] = useState('Dashboard');
-
+    console.log('실행');
     return (
         <Box
             sx={{

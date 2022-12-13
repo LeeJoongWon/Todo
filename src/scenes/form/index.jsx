@@ -13,7 +13,7 @@ const Form = ({ close, data, update, str }) => {
             update(values);
         } else {
             values.success = '진행중';
-            axios.post('http://localhost:3001/todo', values);
+            axios.post('http://localhost:3001/todo', values).then(() => window.location.href('http://localhost:3000/todo'));
         }
     };
 

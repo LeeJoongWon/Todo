@@ -21,13 +21,14 @@ const ToDo = () => {
     }, []);
 
     const _delete = (e, data) => {
-        axios.delete(`http://localhost:3001/todo/${data.id}`);
-        readList();
+        axios.delete(`http://localhost:3001/todo/${data.id}`).then(() => readList());
     };
+
     const _update = (data) => {
-        axios.put(`http://localhost:3001/todo/${data.id}`, data);
+        axios.put(`http://localhost:3001/todo/${data.id}`, data).then(() => readList());
         readList();
     };
+
     const modalController = (e, data) => {
         setModify(data);
         setModal(true);
